@@ -1,0 +1,294 @@
+<!DOCTYPE html>
+<html lang="zh-TW">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>出院準備服務篩選表</title>
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+    <link rel="stylesheet" href="assessment-style.css">
+</head>
+<body>
+    <!-- Loading 動畫 -->
+    <div class="loading-overlay" id="loadingOverlay">
+        <div class="loading-spinner">
+            <div class="spinner"></div>
+            <p>加載評估表單中...</p>
+        </div>
+    </div>
+
+    <div class="assessment-container">
+        <div class="assessment-header">
+            <div class="header-content">
+                <h1><i class="fas fa-clipboard-check"></i> 出院準備服務篩選表</h1>
+            </div>
+            <button class="btn-close" id="btnClose" title="關閉"><i class="fas fa-times"></i></button>
+        </div>
+
+        <form id="assessmentForm">
+            <!-- 基本資料 -->
+            <div class="section basic-info">
+                <h3><i class="fas fa-info-circle"></i> 基本資料</h3>
+                <div class="info-grid">
+                    <div class="info-item">
+                        <label><i class="fas fa-bed"></i> 床號：</label>
+                        <span id="bedNumber">-</span>
+                    </div>
+                    <div class="info-item">
+                        <label><i class="fas fa-id-card"></i> 病歷號：</label>
+                        <span id="patientId">-</span>
+                    </div>
+                    <div class="info-item">
+                        <label><i class="fas fa-user"></i> 姓名：</label>
+                        <span id="patientName">-</span>
+                    </div>
+                    <div class="info-item">
+                        <label><i class="fas fa-calendar-check"></i> 住院日：</label>
+                        <span id="admissionDate">-</span>
+                    </div>
+                    <div class="info-item">
+                        <label><i class="fas fa-calendar"></i> 評估日：</label>
+                        <span id="assessmentDate">-</span>
+                    </div>
+                    <div class="info-item">
+                        <label><i class="fas fa-user-nurse"></i> 個管師：</label>
+                        <input type="text" id="doctor" class="input-field" placeholder="請輸入個管師姓名">
+                    </div>
+                </div>
+            </div>
+
+            <!-- 婚姻狀況 -->
+            <div class="section">
+                <h3><i class="fas fa-heart"></i> 婚姻狀況</h3>
+                <div class="checkbox-group">
+                    <label class="checkbox-item">
+                        <input type="radio" name="marriage" value="09" data-score="09">
+                        <span>鰥寡獨居(09)</span>
+                    </label>
+                    <label class="checkbox-item">
+                        <input type="radio" name="marriage" value="25" data-score="25">
+                        <span>可提供照護者有健康問題(25)</span>
+                    </label>
+                    <label class="checkbox-item">
+                        <input type="radio" name="marriage" value="0" data-score="0">
+                        <span>年齡在65歲以下或陪病(25)</span>
+                    </label>
+                </div>
+            </div>
+
+            <!-- 出院照護 -->
+            <div class="section">
+                <h3><i class="fas fa-home"></i> 出院照護</h3>
+                <div class="checkbox-group">
+                    <label class="checkbox-item">
+                        <input type="radio" name="discharge" value="09" data-score="09">
+                        <span>無法獨自下床(09)</span>
+                    </label>
+                    <label class="checkbox-item">
+                        <input type="radio" name="discharge" value="25" data-score="25">
+                        <span>需人協助進食(25)</span>
+                    </label>
+                    <label class="checkbox-item">
+                        <input type="radio" name="discharge" value="25" data-score="25">
+                        <span>需協助移位或輪椅・暫抵輔具未租借(25)</span>
+                    </label>
+                    <label class="checkbox-item">
+                        <input type="radio" name="discharge" value="25" data-score="25">
+                        <span>需人協助就醫後繼續治療(25)</span>
+                    </label>
+                </div>
+            </div>
+
+            <!-- 醫療照護 -->
+            <div class="section">
+                <h3><i class="fas fa-stethoscope"></i> 醫療照護</h3>
+                <div class="checkbox-group">
+                    <label class="checkbox-item">
+                        <input type="radio" name="medical" value="09" data-score="09">
+                        <span>骨折未能(09)</span>
+                    </label>
+                    <label class="checkbox-item">
+                        <input type="radio" name="medical" value="25" data-score="25">
+                        <span>需人協助管灌餵食(25)</span>
+                    </label>
+                    <label class="checkbox-item">
+                        <input type="radio" name="medical" value="25" data-score="25">
+                        <span>氣切抽吸技術(25)</span>
+                    </label>
+                    <label class="checkbox-item">
+                        <input type="radio" name="medical" value="25" data-score="25">
+                        <span>需人協助翻身拍背(25)</span>
+                    </label>
+                    <label class="checkbox-item">
+                        <input type="radio" name="medical" value="25" data-score="25">
+                        <span>置放導尿管照護與訓練需協助・即除外此項(25)</span>
+                    </label>
+                </div>
+            </div>
+
+            <!-- 健康問題 -->
+            <div class="section">
+                <h3><i class="fas fa-heartbeat"></i> 健康問題</h3>
+                <div class="checkbox-group">
+                    <label class="checkbox-item">
+                        <input type="radio" name="health" value="09" data-score="09">
+                        <span>有胃造廔(09)</span>
+                    </label>
+                    <label class="checkbox-item">
+                        <input type="radio" name="health" value="25" data-score="25">
+                        <span>需接受重症照顧(25)</span>
+                    </label>
+                    <label class="checkbox-item">
+                        <input type="radio" name="health" value="25" data-score="25">
+                        <span>需接受急慢性傷口處理(25)</span>
+                    </label>
+                    <label class="checkbox-item">
+                        <input type="radio" name="health" value="25" data-score="25">
+                        <span>置放氣切管或鼻胃管拔除後(25)</span>
+                    </label>
+                    <label class="checkbox-item">
+                        <input type="radio" name="health" value="25" data-score="25">
+                        <span>需接受疼痛控管病人認與實施教育(25)</span>
+                    </label>
+                </div>
+            </div>
+
+            <!-- 其他評估 -->
+            <div class="section">
+                <h3><i class="fas fa-tasks"></i> 其他評估</h3>
+                <div class="checkbox-group">
+                    <label class="checkbox-item">
+                        <input type="radio" name="others" value="09" data-score="09">
+                        <span>未照顧經驗(09)</span>
+                    </label>
+                    <label class="checkbox-item">
+                        <input type="radio" name="others" value="09" data-score="09">
+                        <span>需持續照顧服務(09)</span>
+                    </label>
+                    <label class="checkbox-item">
+                        <input type="radio" name="others" value="25" data-score="25">
+                        <span>衛教原因不願配合規律就醫・不願按時拿藥(25)</span>
+                    </label>
+                    <label class="checkbox-item">
+                        <input type="radio" name="others" value="25" data-score="25">
+                        <span>有憂鬱症現象需處理與藥物・經醫師判定(25)</span>
+                    </label>
+                    <label class="checkbox-item">
+                        <input type="radio" name="others" value="25" data-score="25">
+                        <span>需接受支持性療法(25)</span>
+                    </label>
+                </div>
+            </div>
+
+            <!-- 兒童照顧 -->
+            <div class="section">
+                <h3><i class="fas fa-child"></i> 兒童照顧</h3>
+                <div class="checkbox-group">
+                    <label class="checkbox-item">
+                        <input type="radio" name="children" value="09" data-score="09">
+                        <span>承與照顧(09)</span>
+                    </label>
+                    <label class="checkbox-item">
+                        <input type="radio" name="children" value="25" data-score="25">
+                        <span>新生兒人工生殖(25)</span>
+                    </label>
+                </div>
+            </div>
+
+            <!-- 疫苗 -->
+            <div class="section">
+                <h3><i class="fas fa-syringe"></i> 疫苗</h3>
+                <div class="checkbox-group">
+                    <label class="checkbox-item">
+                        <input type="radio" name="vaccine" value="09" data-score="09">
+                        <span>不曾施種疫苗(09)</span>
+                    </label>
+                    <label class="checkbox-item">
+                        <input type="radio" name="vaccine" value="25" data-score="25">
+                        <span>疫苗後異常(25)</span>
+                    </label>
+                    <label class="checkbox-item">
+                        <input type="radio" name="vaccine" value="25" data-score="25">
+                        <span>流感疫苗接(25)</span>
+                    </label>
+                </div>
+            </div>
+
+            <!-- 醫療過程 -->
+            <div class="section">
+                <h3><i class="fas fa-hospital-alt"></i> 醫療過程</h3>
+                <div class="checkbox-group">
+                    <label class="checkbox-item">
+                        <input type="radio" name="process" value="09" data-score="09">
+                        <span>藥劑醫師(09)</span>
+                    </label>
+                    <label class="checkbox-item">
+                        <input type="radio" name="process" value="25" data-score="25">
+                        <span>有監護重症照護或移用器具(25)</span>
+                    </label>
+                    <label class="checkbox-item">
+                        <input type="radio" name="process" value="25" data-score="25">
+                        <span>有營養照護具體需求(25)</span>
+                    </label>
+                </div>
+            </div>
+
+            <!-- 運動能力 -->
+            <div class="section">
+                <h3><i class="fas fa-running"></i> 運動能力</h3>
+                <div class="checkbox-group">
+                    <label class="checkbox-item">
+                        <input type="radio" name="mobility" value="09" data-score="09">
+                        <span>獨立行動或需協助(09)</span>
+                    </label>
+                    <label class="checkbox-item">
+                        <input type="radio" name="mobility" value="25" data-score="25">
+                        <span>有專業協助需求或課程安排(25)</span>
+                    </label>
+                    <label class="checkbox-item">
+                        <input type="radio" name="mobility" value="25" data-score="25">
+                        <span>有需求或需復健輔具(25)</span>
+                    </label>
+                </div>
+            </div>
+
+            <!-- 認知狀態 -->
+            <div class="section">
+                <h3><i class="fas fa-brain"></i> 認知狀態</h3>
+                <div class="checkbox-group">
+                    <label class="checkbox-item">
+                        <input type="radio" name="cognition" value="09" data-score="09">
+                        <span>定向感正常(09)</span>
+                    </label>
+                    <label class="checkbox-item">
+                        <input type="radio" name="cognition" value="25" data-score="25">
+                        <span>意識不清醒處置(25)</span>
+                    </label>
+                    <label class="checkbox-item">
+                        <input type="radio" name="cognition" value="25" data-score="25">
+                        <span>育前安置或家屬意願(25)</span>
+                    </label>
+                    <label class="checkbox-item">
+                        <input type="radio" name="cognition" value="25" data-score="25">
+                        <span>相關支持性醫療(25)</span>
+                    </label>
+                </div>
+            </div>
+
+            <!-- 總分顯示 -->
+            <div class="score-display">
+                <h2><i class="fas fa-chart-bar"></i> 總分：<span id="totalScore">0</span> 分</h2>
+                <p class="score-description">根據上述評估項目計算得分</p>
+            </div>
+
+            <!-- 按鈕組 -->
+            <div class="form-actions">
+                <button type="button" class="btn btn-secondary" id="btnCancel"><i class="fas fa-times"></i> <span>取消</span></button>
+                <button type="button" class="btn btn-primary" id="btnSaveAssessment"><i class="fas fa-save"></i> <span>儲存評分</span></button>
+            </div>
+        </form>
+    </div>
+
+    <script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
+    <script src="assessment-script.js"></script>
+</body>
+</html>

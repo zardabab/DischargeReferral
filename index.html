@@ -1,0 +1,142 @@
+<!DOCTYPE html>
+<html lang="zh-TW">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>出院轉銜管理系統</title>
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+    <link rel="stylesheet" href="style.css">
+</head>
+<body>
+    <!-- Loading 動畫 -->
+    <div class="loading-overlay" id="loadingOverlay">
+        <div class="loading-spinner">
+            <div class="spinner"></div>
+            <p>加載中...</p>
+        </div>
+    </div>
+
+    <div class="container">
+        <!-- 頁面標題 -->
+        <div class="header-section">
+            <div class="header-content">
+                <h1 class="page-title"><i class="fas fa-hospital"></i> 出院轉銜管理系統</h1>
+                <p class="subtitle">智能化患者出院管理平台</p>
+            </div>
+        </div>
+        
+        <!-- 頂部工具欄 -->
+        <div class="toolbar">
+            <div class="toolbar-left">
+                <button class="btn btn-primary" id="btnAdd" title="新增患者">
+                    <i class="fas fa-plus"></i><span>新增</span>
+                </button>
+                <button class="btn btn-danger" id="btnDelete" title="刪除患者">
+                    <i class="fas fa-trash"></i><span>刪除</span>
+                </button>
+                <div class="search-box">
+                    <i class="fas fa-search"></i>
+                    <input type="text" id="searchInput" placeholder="搜尋患者...">
+                </div>
+            </div>
+            <div class="toolbar-right">
+                <button class="btn btn-success" id="btnSave" title="保存變更">
+                    <i class="fas fa-save"></i><span>保存</span>
+                </button>
+                <button class="btn btn-info" id="btnExport" title="匯出數據">
+                    <i class="fas fa-download"></i><span>匯出</span>
+                </button>
+                <button class="btn btn-secondary" id="btnRefresh" title="重新整理">
+                    <i class="fas fa-sync-alt"></i><span>整理</span>
+                </button>
+            </div>
+        </div>
+
+        <!-- 篩選條件 -->
+        <div class="filter-section">
+            <div class="filter-item">
+                <i class="fas fa-filter"></i>
+                <label>轉銜狀況</label>
+                <select id="filterStatus" class="filter-select">
+                    <option value="">全部</option>
+                    <option value="待銜">待銜</option>
+                    <option value="已銜">已銜</option>
+                </select>
+            </div>
+        </div>
+
+        <!-- 統計卡片 -->
+        <div class="stats-section">
+            <div class="stat-card">
+                <div class="stat-icon"><i class="fas fa-users"></i></div>
+                <div class="stat-content">
+                    <h3>總患者數</h3>
+                    <p id="totalPatients" class="stat-value">0</p>
+                </div>
+            </div>
+            <div class="stat-card">
+                <div class="stat-icon"><i class="fas fa-clock"></i></div>
+                <div class="stat-content">
+                    <h3>待轉銜</h3>
+                    <p id="pendingPatients" class="stat-value">0</p>
+                </div>
+            </div>
+            <div class="stat-card">
+                <div class="stat-icon"><i class="fas fa-check-circle"></i></div>
+                <div class="stat-content">
+                    <h3>已轉銜</h3>
+                    <p id="completedPatients" class="stat-value">0</p>
+                </div>
+            </div>
+        </div>
+
+        <!-- 表格區域 -->
+        <div class="table-section">
+            <div class="table-header">
+                <h2><i class="fas fa-table"></i> 患者列表</h2>
+            </div>
+            <div class="table-wrapper">
+                <table class="data-table">
+                    <thead>
+                        <tr>
+                            <th class="col-checkbox"><input type="checkbox" id="checkAll"></th>
+                            <th class="col-id"><i class="fas fa-id-card"></i> 病歷號</th>
+                            <th class="col-bed"><i class="fas fa-home"></i> 床號</th>
+                            <th class="col-name"><i class="fas fa-user"></i> 姓名</th>
+                            <th class="col-gender"><i class="fas fa-venus-mars"></i> 性別</th>
+                            <th class="col-age"><i class="fas fa-birthday-cake"></i> 年齡</th>
+                            <th class="col-admission"><i class="fas fa-sign-in-alt"></i> 住院日期</th>
+                            <th class="col-discharge"><i class="fas fa-sign-out-alt"></i> 出院日期</th>
+                            <th class="col-department"><i class="fas fa-clinic-medical"></i> 科別</th>
+                            <th class="col-diagnosis"><i class="fas fa-stethoscope"></i> 診斷</th>
+                            <th class="col-status"><i class="fas fa-tasks"></i> 轉銜狀況</th>
+                            <th class="col-score"><i class="fas fa-star"></i> 評分</th>
+                            <th class="col-note"><i class="fas fa-sticky-note"></i> 備註</th>
+                            <th class="col-action"><i class="fas fa-cogs"></i> 操作</th>
+                        </tr>
+                    </thead>
+                    <tbody id="tableBody">
+                        <!-- 動態添加行 -->
+                    </tbody>
+                </table>
+            </div>
+        </div>
+
+        <!-- 分頁 -->
+        <div class="pagination">
+            <button class="page-btn" id="prevPage"><i class="fas fa-chevron-left"></i> 上一頁</button>
+            <span id="pageInfo">第 1 頁</span>
+            <button class="page-btn" id="nextPage">下一頁 <i class="fas fa-chevron-right"></i></button>
+        </div>
+    </div>
+
+    <!-- 編輯模式提示 -->
+    <div class="edit-notification" id="editNotif" style="display:none;">
+        <i class="fas fa-pencil-alt"></i>
+        <p>已進入編輯模式，按 <strong>Ctrl+S</strong> 或點擊「保存」按鈕保存變更</p>
+    </div>
+
+    <script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
+    <script src="script.js"></script>
+</body>
+</html>
